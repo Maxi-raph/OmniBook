@@ -57,7 +57,7 @@ function MarketingPage() {
           containerType='div'
           delay={0.3}
           direction='right'
-          className="flex justify-self-end relative md:w-85 md:h-90 lg:w-100 lg:h-100 rounded-xl border border-default shadow-2xl shadow-shadow-glow
+          className="md:flex md:justify-self-end relative md:w-85 md:h-90 lg:w-100 lg:h-100 rounded-xl border border-default shadow-2xl shadow-shadow-glow
              before:content-[''] before:rounded-xl before:absolute before:inset-0
              before:bg-linear-to-t before:from-black/60 before:to-transparent
              before:pointer-events-none before:z-10">
