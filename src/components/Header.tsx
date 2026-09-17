@@ -23,8 +23,10 @@ export function Header() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-hover">
               <BookOpen className="h-4 w-4 text-background" strokeWidth={2.5} />
             </div>
+            <div>
             <span className="text-lg font-bold text-text-primary">Omni</span>
-            <span className="text-lg font-bold text-text-primary">Book</span>
+            <span className="text-lg font-bold text-accent-primary">Book</span>
+            </div>
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">
@@ -59,7 +61,7 @@ export function Header() {
             Log in
           </Link>
           <AnimatedLink
-            route="/"
+            route="/signup"
             classes="flex items-center gap-1.5 rounded-lg bg-accent-primary px-4 py-2 text-sm 
                      font-semibold text-white transition-colors hover:bg-accent-hover shadow-lg shadow-shadow-glow"
           >

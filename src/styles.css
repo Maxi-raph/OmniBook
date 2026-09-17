@@ -11,7 +11,6 @@
   --background: #f3f4f6;
   --surface: #f9fafb;
   --surface-elevated: #ffffff;
-
   --text-primary: #111827;
   --text-secondary: #374151;
   --text-muted: #6b7280;
@@ -39,7 +38,6 @@
   --background: #0f172a;
   --surface: #1e293b;
   --surface-elevated: #263449;
-
   --text-primary: #f1f5f9;
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
@@ -68,7 +66,6 @@
     --background: #0f172a;
     --surface: #1e293b;
     --surface-elevated: #263449;
-
     --text-primary: #f1f5f9;
     --text-secondary: #cbd5e1;
     --text-muted: #94a3b8;
@@ -96,6 +93,7 @@
   --color-surface: var(--surface);
   --color-surface-elevated: var(--surface-elevated);
   --color-text-primary: var(--text-primary);
+  --color-text-primary-inverted: var(--text-primary-inverted);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
   --color-accent-primary: var(--accent-primary);

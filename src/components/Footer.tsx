@@ -1,12 +1,15 @@
 import { Mail } from "lucide-react";
 import { FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
-
-
+import AnimatedContainer from "./AnimatedContainer";
 
 export default function Footer() {
   return (
-    <footer className="border-t text-text-muted bg-background mt-18 pt-18">
-      <div className="page-wrap px-2">
+    <footer className="border-t text-text-muted bg-background mt-18 pt-18 pb-6">
+      <AnimatedContainer
+        type='scroll'
+        containerType='div'
+        delay={0.3}
+        className="page-wrap px-2">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
           {/* Brand column */}
           <div className="md:col-span-1">
@@ -67,7 +70,7 @@ export default function Footer() {
             </a>
           </div>
         </div>
-      </div>
+      </AnimatedContainer>
     </footer>
   )
 }
