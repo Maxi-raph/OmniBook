@@ -23,7 +23,8 @@ export function Header() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-hover">
               <BookOpen className="h-4 w-4 text-background" strokeWidth={2.5} />
             </div>
-            <span className="text-lg font-bold text-text-primary">OmniBook</span>
+            <span className="text-lg font-bold text-text-primary">Omni</span>
+            <span className="text-lg font-bold text-text-primary">Book</span>
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">

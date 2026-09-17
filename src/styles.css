@@ -8,7 +8,7 @@
 
 :root {
   /* Light Mode — Design System */
-  --background: #ffffff;
+  --background: #f3f4f6;
   --surface: #f9fafb;
   --surface-elevated: #ffffff;
 
@@ -28,10 +28,10 @@
   --error: #dc2626;
 
   /* Shadows — subtle, indigo-tinted */
-  --shadow-light: rgba(79, 70, 229, 0.08);
-  --shadow-medium: rgba(79, 70, 229, 0.12);
-  --shadow-heavy: rgba(79, 70, 229, 0.18);
-  --shadow-glow: rgba(79, 70, 229, 0.15);
+  --shadow-light: rgba(79, 70, 229, 0.25);
+  --shadow-medium: rgba(79, 70, 229, 0.30);
+  --shadow-heavy: rgba(79, 70, 229, 0.35);
+  --shadow-glow: rgba(79, 70, 229, 0.55);
 }
 
 :root[data-theme="dark"] {
@@ -55,11 +55,13 @@
   --success: #34d399;
   --error: #f87171;
 
-  --shadow-light: rgba(99, 102, 241, 0.1);
-  --shadow-medium: rgba(99, 102, 241, 0.2);
-  --shadow-heavy: rgba(99, 102, 241, 0.3);
-  --shadow-glow: rgba(99, 102, 241, 0.4);
+  --shadow-light: rgba(99, 102, 241, 0.15);
+  --shadow-medium: rgba(99, 102, 241, 0.22);
+  --shadow-heavy: rgba(99, 102, 241, 0.30);
+  --shadow-glow: rgba(99, 102, 241, 0.45);
+  
 }
+
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -82,10 +84,10 @@
     --success: #34d399;
     --error: #f87171;
 
-    --shadow-light: rgba(99, 102, 241, 0.1);
-    --shadow-medium: rgba(99, 102, 241, 0.2);
-    --shadow-heavy: rgba(99, 102, 241, 0.3);
-    --shadow-glow: rgba(99, 102, 241, 0.4);
+  --shadow-light: rgba(99, 102, 241, 0.15);
+  --shadow-medium: rgba(99, 102, 241, 0.22);
+  --shadow-heavy: rgba(99, 102, 241, 0.30);
+  --shadow-glow: rgba(99, 102, 241, 0.45);
   }
 }
 
