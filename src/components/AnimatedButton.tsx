@@ -3,7 +3,7 @@ import type React from 'react';
 
 type AnimatedButtonProp = {
  classes:string,
- func: ()=> any,
+ func?: ()=> any,
  type?: "button" | "submit" | "reset"
  disabled?: boolean
  children:React.ReactNode

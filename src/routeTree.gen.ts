@@ -11,8 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MarketingRouteImport } from './routes/_marketing'
 import { Route as MarketingIndexRouteImport } from './routes/_marketing/index'
-import { Route as MarketingLoginRouteImport } from './routes/_marketing/login'
-import { Route as MarketingSignupRouteImport } from './routes/_marketing/signup'
+import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 
 const MarketingRoute = MarketingRouteImport.update({
   id: '/_marketing',
@@ -23,49 +23,47 @@ const MarketingIndexRoute = MarketingIndexRouteImport.update({
   path: '/',
   getParentRoute: () => MarketingRoute,
 } as any)
-const MarketingLoginRoute = MarketingLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => MarketingRoute,
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const MarketingSignupRoute = MarketingSignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => MarketingRoute,
+const AuthSignupRoute = AuthSignupRouteImport.update({
+  id: '/auth/signup',
+  path: '/auth/signup',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof MarketingIndexRoute
-  '/login': typeof MarketingLoginRoute
-  '/signup': typeof MarketingSignupRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
 }
 export interface FileRoutesByTo {
-  '/login': typeof MarketingLoginRoute
-  '/signup': typeof MarketingSignupRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
   '/': typeof MarketingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_marketing': typeof MarketingRouteWithChildren
-  '/_marketing/login': typeof MarketingLoginRoute
-  '/_marketing/signup': typeof MarketingSignupRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
   '/_marketing/': typeof MarketingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup'
+  fullPaths: '/' | '/auth/login' | '/auth/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/signup' | '/'
+  to: '/auth/login' | '/auth/signup' | '/'
   id:
-    | '__root__'
-    | '/_marketing'
-    | '/_marketing/login'
-    | '/_marketing/signup'
-    | '/_marketing/'
+    '__root__' | '/_marketing' | '/auth/login' | '/auth/signup' | '/_marketing/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   MarketingRoute: typeof MarketingRouteWithChildren
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthSignupRoute: typeof AuthSignupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -84,32 +82,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MarketingIndexRouteImport
       parentRoute: typeof MarketingRoute
     }
-    '/_marketing/login': {
-      id: '/_marketing/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof MarketingLoginRouteImport
-      parentRoute: typeof MarketingRoute
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_marketing/signup': {
-      id: '/_marketing/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof MarketingSignupRouteImport
-      parentRoute: typeof MarketingRoute
+    '/auth/signup': {
+      id: '/auth/signup'
+      path: '/auth/signup'
+      fullPath: '/auth/signup'
+      preLoaderRoute: typeof AuthSignupRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
 interface MarketingRouteChildren {
-  MarketingLoginRoute: typeof MarketingLoginRoute
-  MarketingSignupRoute: typeof MarketingSignupRoute
   MarketingIndexRoute: typeof MarketingIndexRoute
 }
 
 const MarketingRouteChildren: MarketingRouteChildren = {
-  MarketingLoginRoute: MarketingLoginRoute,
-  MarketingSignupRoute: MarketingSignupRoute,
   MarketingIndexRoute: MarketingIndexRoute,
 }
 
@@ -119,6 +113,8 @@ const MarketingRouteWithChildren = MarketingRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   MarketingRoute: MarketingRouteWithChildren,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthSignupRoute: AuthSignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

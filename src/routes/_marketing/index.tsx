@@ -1,6 +1,8 @@
 import AnimatedContainer from '#/components/AnimatedContainer'
 import AnimatedLink from '#/components/AnimatedLink'
 import { createFileRoute } from '@tanstack/react-router'
+import heroImage from '@/assets/images/visily-image.png'
+
 import { ArrowRight, Bell, CreditCard, Globe, PlayIcon, Star, Users, Calendar, Link as LinkIcon } from 'lucide-react'
 
 export const Route = createFileRoute('/_marketing/')({
@@ -16,7 +18,7 @@ export const Route = createFileRoute('/_marketing/')({
 
 function MarketingPage() {
   return(
-    <div className='mt-18 page-wrap'>
+    <div className='mt-14 page-wrap'>
       <section className="grid gap-12 grid-cols-1 md:grid-cols-2 items-center ">
         <AnimatedContainer
           type='load'
@@ -33,7 +35,7 @@ function MarketingPage() {
           </p>
           <div className="flex gap-4 items-center mt-2 md:flex-wrap lg:flex-nowrap">
             <AnimatedLink
-              route="/signup"
+              route="/auth/signup"
               classes="flex items-center rounded-lg bg-accent-primary px-4 py-2 text-sm font-semibold text-white hover:bg-accent-hover shadow-lg shadow-shadow-glow transition-all duration-200"
             >Start Free Trial</AnimatedLink>
             <AnimatedLink
@@ -57,11 +59,11 @@ function MarketingPage() {
           containerType='div'
           delay={0.3}
           direction='right'
-          className="md:flex md:justify-self-end relative md:w-85 md:h-90 lg:w-100 lg:h-100 rounded-xl border border-default shadow-2xl shadow-shadow-glow
+          className="md:flex md:justify-self-end relative h-60 md:w-85 md:h-90 lg:w-100 lg:h-100 rounded-xl border border-default shadow-2xl shadow-shadow-glow
              before:content-[''] before:rounded-xl before:absolute before:inset-0
              before:bg-linear-to-t before:from-black/60 before:to-transparent
              before:pointer-events-none before:z-10">
-            <img src="src/assets/images/visily-image.png" alt="Hero-Image" 
+            <img src={heroImage} alt="Hero-Image" 
             className='w-full h-full object-cover'/>
         </AnimatedContainer>
       </section>
@@ -230,7 +232,7 @@ function MarketingPage() {
           What Our Clients Say
         </h2>
         {/* Testimonial 1 */}
-        <div className='flex gap-6 overflow-x-scroll scrollbar-hide px-6 py-6'>
+        <div className='flex gap-3 overflow-x-scroll scrollbar-hide px-6 py-6'>
           <div className="max-w-[320px] md:max-w-120 lg:max-w-125 shrink-0 
           text-center p-4 rounded-xl bg-surface-elevated border border-border-default
            shadow-lg shadow-light">
@@ -327,7 +329,7 @@ function MarketingPage() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <AnimatedLink
-              route="/signup"
+              route="/auth/signup"
               classes="flex items-center gap-1.5 rounded-lg bg-accent-primary px-4 py-2 text-sm 
                      font-semibold text-white transition-colors hover:bg-accent-hover shadow-lg shadow-shadow-glow"
             >
