@@ -232,7 +232,7 @@ function MarketingPage() {
           What Our Clients Say
         </h2>
         {/* Testimonial 1 */}
-        <div className='flex gap-3 overflow-x-scroll scrollbar-hide px-6 py-6'>
+        <div className='flex gap-3 overflow-x-scroll scrollbar-hide px-2 py-6'>
           <div className="max-w-[320px] md:max-w-120 lg:max-w-125 shrink-0 
           text-center p-4 rounded-xl bg-surface-elevated border border-border-default
            shadow-lg shadow-light">

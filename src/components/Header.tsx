@@ -55,7 +55,7 @@ export function Header() {
         {/* RIGHT: Actions and Toggle Icon */}
         <div className="flex items-center gap-4">
           <Link
-            to="/"
+            to="/auth/login"
             className="hidden text-sm font-medium text-text-muted transition-colors hover:text-text-primary md:block"
           >
             Log in
