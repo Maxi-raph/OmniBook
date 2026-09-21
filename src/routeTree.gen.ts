@@ -9,19 +9,43 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DashboardRouteImport } from './routes/_dashboard'
 import { Route as MarketingRouteImport } from './routes/_marketing'
+import { Route as OnboardingRouteImport } from './routes/_onboarding'
+import { Route as DashboardDashboardRouteImport } from './routes/_dashboard/dashboard'
 import { Route as MarketingIndexRouteImport } from './routes/_marketing/index'
+import { Route as OnboardingOnboardingRouteImport } from './routes/_onboarding/onboarding'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthSignupRouteImport } from './routes/auth/signup'
+import { Route as OnboardingOnboardingAvailabilityRouteImport } from './routes/_onboarding/onboarding.availability'
+import { Route as OnboardingOnboardingServicesRouteImport } from './routes/_onboarding/onboarding.services'
 
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/_dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MarketingRoute = MarketingRouteImport.update({
   id: '/_marketing',
   getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/_onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardDashboardRoute = DashboardDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => DashboardRoute,
 } as any)
 const MarketingIndexRoute = MarketingIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => MarketingRoute,
+} as any)
+const OnboardingOnboardingRoute = OnboardingOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => OnboardingRoute,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/auth/login',
@@ -33,41 +57,100 @@ const AuthSignupRoute = AuthSignupRouteImport.update({
   path: '/auth/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OnboardingOnboardingAvailabilityRoute =
+  OnboardingOnboardingAvailabilityRouteImport.update({
+    id: '/availability',
+    path: '/availability',
+    getParentRoute: () => OnboardingOnboardingRoute,
+  } as any)
+const OnboardingOnboardingServicesRoute =
+  OnboardingOnboardingServicesRouteImport.update({
+    id: '/services',
+    path: '/services',
+    getParentRoute: () => OnboardingOnboardingRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof MarketingIndexRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/onboarding': typeof OnboardingOnboardingRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/onboarding/availability': typeof OnboardingOnboardingAvailabilityRoute
+  '/onboarding/services': typeof OnboardingOnboardingServicesRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof MarketingIndexRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/onboarding': typeof OnboardingOnboardingRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
-  '/': typeof MarketingIndexRoute
+  '/onboarding/availability': typeof OnboardingOnboardingAvailabilityRoute
+  '/onboarding/services': typeof OnboardingOnboardingServicesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_dashboard': typeof DashboardRouteWithChildren
   '/_marketing': typeof MarketingRouteWithChildren
+  '/_onboarding': typeof OnboardingRouteWithChildren
+  '/_dashboard/dashboard': typeof DashboardDashboardRoute
+  '/_onboarding/onboarding': typeof OnboardingOnboardingRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/_marketing/': typeof MarketingIndexRoute
+  '/_onboarding/onboarding/availability': typeof OnboardingOnboardingAvailabilityRoute
+  '/_onboarding/onboarding/services': typeof OnboardingOnboardingServicesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/login' | '/auth/signup'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/onboarding'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/onboarding/availability'
+    | '/onboarding/services'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth/login' | '/auth/signup' | '/'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/onboarding'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/onboarding/availability'
+    | '/onboarding/services'
   id:
-    '__root__' | '/_marketing' | '/auth/login' | '/auth/signup' | '/_marketing/'
+    | '__root__'
+    | '/_dashboard'
+    | '/_marketing'
+    | '/_onboarding'
+    | '/_dashboard/dashboard'
+    | '/_onboarding/onboarding'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/_marketing/'
+    | '/_onboarding/onboarding/availability'
+    | '/_onboarding/onboarding/services'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  DashboardRoute: typeof DashboardRouteWithChildren
   MarketingRoute: typeof MarketingRouteWithChildren
+  OnboardingRoute: typeof OnboardingRouteWithChildren
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_dashboard': {
+      id: '/_dashboard'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_marketing': {
       id: '/_marketing'
       path: ''
@@ -75,12 +158,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MarketingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_onboarding': {
+      id: '/_onboarding'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/dashboard': {
+      id: '/_dashboard/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardDashboardRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/_marketing/': {
       id: '/_marketing/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof MarketingIndexRouteImport
       parentRoute: typeof MarketingRoute
+    }
+    '/_onboarding/onboarding': {
+      id: '/_onboarding/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingOnboardingRouteImport
+      parentRoute: typeof OnboardingRoute
     }
     '/auth/login': {
       id: '/auth/login'
@@ -96,8 +200,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_onboarding/onboarding/availability': {
+      id: '/_onboarding/onboarding/availability'
+      path: '/availability'
+      fullPath: '/onboarding/availability'
+      preLoaderRoute: typeof OnboardingOnboardingAvailabilityRouteImport
+      parentRoute: typeof OnboardingOnboardingRoute
+    }
+    '/_onboarding/onboarding/services': {
+      id: '/_onboarding/onboarding/services'
+      path: '/services'
+      fullPath: '/onboarding/services'
+      preLoaderRoute: typeof OnboardingOnboardingServicesRouteImport
+      parentRoute: typeof OnboardingOnboardingRoute
+    }
   }
 }
+
+interface DashboardRouteChildren {
+  DashboardDashboardRoute: typeof DashboardDashboardRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardDashboardRoute: DashboardDashboardRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
 
 interface MarketingRouteChildren {
   MarketingIndexRoute: typeof MarketingIndexRoute
@@ -111,8 +241,35 @@ const MarketingRouteWithChildren = MarketingRoute._addFileChildren(
   MarketingRouteChildren,
 )
 
+interface OnboardingOnboardingRouteChildren {
+  OnboardingOnboardingAvailabilityRoute: typeof OnboardingOnboardingAvailabilityRoute
+  OnboardingOnboardingServicesRoute: typeof OnboardingOnboardingServicesRoute
+}
+
+const OnboardingOnboardingRouteChildren: OnboardingOnboardingRouteChildren = {
+  OnboardingOnboardingAvailabilityRoute: OnboardingOnboardingAvailabilityRoute,
+  OnboardingOnboardingServicesRoute: OnboardingOnboardingServicesRoute,
+}
+
+const OnboardingOnboardingRouteWithChildren =
+  OnboardingOnboardingRoute._addFileChildren(OnboardingOnboardingRouteChildren)
+
+interface OnboardingRouteChildren {
+  OnboardingOnboardingRoute: typeof OnboardingOnboardingRouteWithChildren
+}
+
+const OnboardingRouteChildren: OnboardingRouteChildren = {
+  OnboardingOnboardingRoute: OnboardingOnboardingRouteWithChildren,
+}
+
+const OnboardingRouteWithChildren = OnboardingRoute._addFileChildren(
+  OnboardingRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
+  DashboardRoute: DashboardRouteWithChildren,
   MarketingRoute: MarketingRouteWithChildren,
+  OnboardingRoute: OnboardingRouteWithChildren,
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
 }

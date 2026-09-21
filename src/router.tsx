@@ -7,6 +7,7 @@ export function getRouter() {
     scrollRestoration: true,
     defaultPreload: 'intent',
     defaultPreloadStaleTime: 0,
+    getScrollRestorationKey: (location) => location.pathname,
   })
 
   return router
