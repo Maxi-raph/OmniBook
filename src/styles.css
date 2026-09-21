@@ -17,7 +17,7 @@
 
   --accent-primary: #4f46e5;
   --accent-hover: #4338ca;
-  --accent-pending: #c7d2fe;
+  --accent-pending: #97a4d6;
   --accent-text: #4f46e5;
 
   --border-default: #e5e7eb;
@@ -97,6 +97,7 @@
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
   --color-accent-primary: var(--accent-primary);
+  --color-accent-pending: var(--accent-pending);
   --color-accent-hover: var(--accent-hover);
   --color-accent-text: var(--accent-text);
   --color-border-default: var(--border-default);
