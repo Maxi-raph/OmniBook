@@ -4,7 +4,7 @@ import AnimatedContainer from "./AnimatedContainer";
 
 export default function Footer() {
   return (
-    <footer className="border-t text-text-muted bg-background mt-18 pt-18 pb-6">
+    <footer className="border-t text-text-muted bg-background mt-14 pt-18 pb-6">
       <AnimatedContainer
         type='scroll'
         containerType='div'
