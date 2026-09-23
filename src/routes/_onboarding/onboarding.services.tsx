@@ -1,7 +1,9 @@
 import AnimatedButton from '#/components/AnimatedButton'
 import { useOnboarding } from '#/context/OnboardingContext'
+import { saveOnboarding } from '#/lib/onboarding'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { ArrowLeft, ArrowRight, Clock, Plus, Stars, Zap } from 'lucide-react'
+import { useState } from 'react'
 
 /**
  * Step 3 of onboarding — "Services".
@@ -20,13 +22,15 @@ export const Route = createFileRoute('/_onboarding/onboarding/services')({
 
 function onboardingServices() {
   const navigate = useNavigate()
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   // Shared onboarding state and service helpers.
   // `data.services` is the array of services being built.
   const {
     data,
-    setData,
     loading,
+    reset,
     addService,
     updateService,
     removeService,
@@ -39,9 +43,19 @@ function onboardingServices() {
 
   // Placeholder submit handler. Later, this will call saveOnboarding(data)
   // to write everything to Supabase, then redirect to /dashboard.
-  function handleNext() {
-    // Later: save all onboarding data to Supabase
-    navigate({ to: '/' })
+   async function handleNext() {
+    setError(null)
+    setSaving(true)
+
+    try {
+      await saveOnboarding(data)
+      reset()  // clear context after success
+      navigate({ to: '/dashboard' })
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong')
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -61,7 +75,7 @@ function onboardingServices() {
           Each card has its own inputs, all wired to the shared context. */}
       {data.services.map((service, index) => (
         <div
-          key={service.name}
+          key={service.id}
           className="mt-8 rounded-xl border border-border-default bg-surface-elevated shadow-lg shadow-shadow-heavy py-6"
         >
           {/* Card header — service label + star icon */}
@@ -212,6 +226,12 @@ function onboardingServices() {
           Add another service
         </p>
       </AnimatedButton>
+    
+      {error && (
+        <div className="mt-6 rounded-lg border border-error/30 bg-error/10 p-3 text-sm text-error">
+          {error}
+        </div>
+      )}
 
       {/* Navigation */}
       <div className="mt-10 flex items-center justify-between">
@@ -223,13 +243,19 @@ function onboardingServices() {
           <ArrowLeft size={14} /> Back
         </AnimatedButton>
 
-        <AnimatedButton
-          type="button"
-          func={handleNext}
-          classes="flex items-center gap-1.5 rounded-lg bg-accent-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-hover cursor-pointer focus:border-accent-hover active:border-accent-hover"
-        >
-          Finish Setup <ArrowRight size={14} />
-        </AnimatedButton>
+      <AnimatedButton
+        type="button"
+        func={handleNext}
+        disabled={saving}
+        classes={`flex items-center gap-1.5 rounded-lg px-5 py-2.5 text-sm font-semibold text-white cursor-pointer 
+                  focus:border-accent-hover active:border-accent-hover ${
+          saving
+            ? 'bg-accent-pending cursor-not-allowed'
+            : 'bg-accent-primary hover:bg-accent-hover'
+        }`}
+      >
+        {saving ? 'Saving...' : 'Finish Setup'} <ArrowRight size={14} />
+      </AnimatedButton>
       </div>
 
       {/* Divider separating the form from the info cards below */}

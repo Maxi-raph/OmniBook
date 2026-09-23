@@ -15,10 +15,10 @@ import { Check } from 'lucide-react'
  * by the parent route. This file only handles the visual chrome.
  */
 export const Route = createFileRoute('/_onboarding')({
-  component: RouteComponent,
+  component: OnboardingLayout,
 })
 
-function RouteComponent() {
+function OnboardingLayout() {
   // Read the current URL to determine which step is active.
   // The progress bar highlights the active step based on this.
   const location = useLocation()
@@ -165,7 +165,7 @@ function RouteComponent() {
           TanStack Router renders the matched child route here
           (Step 1, Step 2, or Step 3, depending on the URL).
           ============================================================ */}
-      <div className="page-wrap py-8 min-h-screen">
+      <div className="px-2 pt-8 min-h-screen">
         <Outlet />
       </div>
 

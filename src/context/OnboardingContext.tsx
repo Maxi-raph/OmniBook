@@ -23,6 +23,7 @@ export type OnboardingService = {
   durationMinutes: number
   priceCents: number
   description: string
+  id: string
 }
 
 // Everything the onboarding wizard collects across all three steps.
@@ -67,6 +68,7 @@ function createEmptyService(): OnboardingService {
     durationMinutes: 60,
     priceCents: 0,
     description: '',
+    id: crypto.randomUUID(), 
   }
 }
 
