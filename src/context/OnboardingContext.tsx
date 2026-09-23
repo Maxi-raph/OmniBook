@@ -113,6 +113,7 @@ const OnboardingContext = createContext<OnboardingContextValue | null>(null)
 // ============================================
 
 export function OnboardingProvider({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate()
   // The full onboarding state. Everything the user enters lives here.
   const [data, setDataState] = useState<OnboardingData>(INITIAL_DATA)
 
@@ -175,7 +176,6 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
   // inside a regular function. See the note at the end.
   function reset() {
     setDataState(INITIAL_DATA)
-    const navigate = useNavigate()
     navigate({ to: '/onboarding' })
   }
 

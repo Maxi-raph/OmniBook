@@ -49,7 +49,7 @@ function onboardingServices() {
 
     try {
       await saveOnboarding(data)
-      reset()  // clear context after success
+      reset()
       navigate({ to: '/dashboard' })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')

@@ -41,13 +41,20 @@ export default function OnboardingPage() {
     navigate({ to: '/onboarding/availability' })
   }
 
-  // Clean up the blob URL when the preview changes or the component unmounts.
-  // The cleanup function runs before the next effect and on unmount.
-  useEffect(() => {
-    return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl)
-    }
-  }, [previewUrl])
+  // When the component mounts, or when data.logoFile changes, ensure
+  // the preview URL matches the file in context.
+    useEffect(() => {
+      if (data.logoFile) {
+        const url = URL.createObjectURL(data.logoFile)
+        setPreviewUrl(url)
+
+        return () => {
+          URL.revokeObjectURL(url)
+        }
+      } else {
+        setPreviewUrl(null)
+      }
+    }, [data.logoFile])
 
   return (
     <div className="pt-6">
@@ -115,8 +122,6 @@ export default function OnboardingPage() {
                 const file = e.target.files?.[0]
                 if (file) {
                   setData((prev) => ({ ...prev, logoFile: file }))
-                  const url = URL.createObjectURL(file)
-                  setPreviewUrl(url)
                 }
               }}
             />
