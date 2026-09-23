@@ -1,6 +1,7 @@
 import AnimatedButton from '#/components/AnimatedButton'
+import { useOnboarding } from '#/context/OnboardingContext'
 import { useNavigate } from '@tanstack/react-router'
-import { ArrowRight, Globe, Info, Link, Upload } from 'lucide-react'
+import { ArrowRight, Calendar, Globe, Info, Layers, Link, Upload } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
 /**
@@ -9,14 +10,39 @@ import { useEffect, useRef, useState } from 'react'
  * This component holds the profile setup form: logo upload, tagline,
  * and the auto-generated booking link. It's rendered by the parent route
  * `_onboarding/onboarding.tsx` when no child step is active.
+ *
+ * All form values live in the OnboardingContext so they survive navigation
+ * between steps. The only local state here is the logo preview URL and the
+ * "link copied" toast — both are ephemeral UI state, not data to persist.
  */
 export default function OnboardingPage() {
+  // Router hook for navigating to the next onboarding step.
   const navigate = useNavigate()
+
+  // Ref to the hidden <input type="file">. The "Choose File" button
+  // triggers `.click()` on this ref to open the OS file picker.
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [logoFile, setLogoFile] = useState<File | null>(null)
+
+  // Temporary blob URL for the preview image. Created from the selected
+  // File via URL.createObjectURL. Must be revoked on unmount to avoid
+  // memory leaks.
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+
+  // Controls the "Link Copied" toast visibility when the user clicks
+  // the booking link to copy it.
   const [linkCopied, setLinkCopied] = useState(false)
 
+  // Shared onboarding state. `data` holds all values across all 3 steps.
+  // `setData` merges partial updates into the existing state.
+  const { data, setData, loading } = useOnboarding()
+
+    // Navigate to the availability page.
+   function handleNext() {
+    navigate({ to: '/onboarding/availability' })
+  }
+
+  // Clean up the blob URL when the preview changes or the component unmounts.
+  // The cleanup function runs before the next effect and on unmount.
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl)
@@ -76,8 +102,10 @@ export default function OnboardingPage() {
             </p>
 
             {/* Invisible file input. Triggered programmatically by the
-                "Choose File" button below. When a file is selected, we
-                store the File and generate a preview URL. */}
+                "Choose File" button below. When a file is selected, we:
+                1. Store the File in local state (for preview)
+                2. Store the File in context (for the eventual upload)
+                3. Create a blob URL for the preview image */}
             <input
               ref={fileInputRef}
               type="file"
@@ -86,13 +114,16 @@ export default function OnboardingPage() {
               onChange={(e) => {
                 const file = e.target.files?.[0]
                 if (file) {
-                  setLogoFile(file)
+                  setData((prev) => ({ ...prev, logoFile: file }))
                   const url = URL.createObjectURL(file)
                   setPreviewUrl(url)
                 }
               }}
             />
 
+            {/* Trigger button — clicks the hidden input above.
+                The file picker opens; the user selects a file;
+                the input's onChange handler takes over. */}
             <AnimatedButton
               func={() => fileInputRef.current?.click()}
               classes="border border-text-muted py-1 px-2 rounded-lg cursor-pointer
@@ -106,6 +137,9 @@ export default function OnboardingPage() {
         </div>
 
         {/* ---------- Tagline input ---------- */}
+        {/* Controlled input — value comes from context, onChange writes back.
+            This way the tagline persists across step navigation and can be
+            saved to Supabase in the final step. */}
         <div className="flex flex-col px-6 gap-2 mt-6">
           <label className="font-bold" htmlFor="tagline">
             Professional Tagline
@@ -114,6 +148,10 @@ export default function OnboardingPage() {
             type="text"
             id="tagline"
             name="tagline"
+            value={data.tagline}
+            onChange={(e) =>
+              setData((prev) => ({ ...prev, tagline: e.target.value }))
+            }
             className="w-full h-11 px-4 rounded-xl border border-text-muted
               placeholder:text-text-muted placeholder:text-sm
               focus:border-accent-primary focus:outline-none
@@ -127,13 +165,19 @@ export default function OnboardingPage() {
         </div>
 
         {/* ---------- Booking link (copy to clipboard) ---------- */}
+        {/* The slug was auto-generated during signup and stored on the
+            organizations row. The context fetches it on mount, so this
+            displays the user's actual booking URL. */}
         <div className="flex flex-col px-6 gap-2 mt-6">
           <p className="font-bold">Your booking link</p>
 
           <AnimatedButton
             func={() => {
-              navigator.clipboard.writeText('https://omnibook.com/your-slug')
+              // Copy the full booking URL to the clipboard
+              navigator.clipboard.writeText(`https://omnibook.com/${data.slug}`)
+              // Show the toast
               setLinkCopied(true)
+              // Hide it after 1 second
               setTimeout(() => setLinkCopied(false), 1000)
             }}
             classes="relative w-full h-11 flex justify-between items-center
@@ -142,12 +186,14 @@ export default function OnboardingPage() {
           >
             <div className="flex gap-2 items-center">
               <Globe className="shrink-0" size={14} />
-              <span className="text-sm">omnibook.com/your-slug</span>
+              <span className="text-sm">{`omnibook.com/${data.slug}`}</span>
             </div>
             <Link className="shrink-0" size={14} />
 
             {/* Toast — fades in above the button when the link is copied.
-                Uses absolute positioning relative to the parent button. */}
+                Uses absolute positioning relative to the parent button.
+                The -top-5 / -top-2 shift and opacity change produce the
+                slide-up + fade-in animation. */}
             <span
               className={`${
                 linkCopied ? '-top-5 opacity-100' : '-top-2 opacity-0'
@@ -170,9 +216,10 @@ export default function OnboardingPage() {
       {/* ---------- Navigation ---------- */}
       <div className="mt-8 max-w-4xl mx-auto flex items-center justify-end">
         {/* Step 1 has no Back button — the user just signed up, so there's
-            nowhere to go back to. Only "Next Step" is shown. */}
+            nowhere to go back to. Only "Next Step" is shown.
+            The button just navigates — data is already in context. */}
         <AnimatedButton
-          func={() => navigate({ to: '/onboarding/availability' })}
+          func={handleNext}
           classes="bg-accent-primary text-surface font-semibold text-sm
             flex justify-center items-center px-4 py-2 gap-2 rounded-xl
             cursor-pointer shadow-lg shadow-shadow-glow
@@ -183,8 +230,35 @@ export default function OnboardingPage() {
         </AnimatedButton>
       </div>
 
-      {/* Divider separating the form from the layout's footer area */}
-      <hr className="text-text-muted max-w-4xl mx-auto h-0.5 mt-6 mb-6" />
+      {/* Divider separating the form from the info cards below */}
+      <hr className="text-text-muted max-w-4xl mx-auto h-0.5 mt-14 mb-14" />
+
+      {/* Informational cards — set expectations for what happens next.
+          Not interactive, just helpful context for the user. */}
+      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Card 1 — teases the next step (availability) */}
+        <div className="bg-surface-elevated flex gap-3 p-6 rounded-xl border border-border-default">
+          <Calendar className="shrink-0 mt-1 text-accent-hover" size={16} />
+          <div className="flex flex-col gap-2">
+            <h3 className="font-semibold">Calendar Sync</h3>
+            <p className="text-xs text-text-muted">
+              In the next step, you'll be able to connect Google or Outlook
+              calendars.
+            </p>
+          </div>
+        </div>
+
+        {/* Card 2 — explains the brand consistency feature */}
+        <div className="bg-surface-elevated flex gap-3 p-6 rounded-xl border border-border-default">
+          <Layers className="shrink-0 mt-1 text-accent-hover" size={16} />
+          <div className="flex flex-col gap-2">
+            <h3 className="font-semibold">Brand Consistency</h3>
+            <p className="text-xs text-text-muted">
+              Your logo and colors will be reflected on your public booking page.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

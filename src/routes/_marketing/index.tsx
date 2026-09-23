@@ -344,6 +344,10 @@ function MarketingPage() {
                 <img
                   src="/testimonial-marcus.jpg"
                   alt="Marcus Thorne"
+                  loading="lazy"
+                  decoding="async"
+                  width={8}
+                  height={8}
                   className="h-full w-full object-cover"
                 />
               </div>
@@ -371,6 +375,10 @@ function MarketingPage() {
                 <img
                   src="/testimonial-amara.jpg"
                   alt="Amara Okafor"
+                  loading="lazy"
+                  decoding="async"
+                  width={8}
+                  height={8}
                   className="h-full w-full object-cover"
                 />
               </div>
@@ -398,6 +406,10 @@ function MarketingPage() {
                 <img
                   src="/testimonial-david.jpg"
                   alt="David Chen"
+                  loading="lazy"
+                  decoding="async"
+                  width={8}
+                  height={8}
                   className="h-full w-full object-cover"
                 />
               </div>

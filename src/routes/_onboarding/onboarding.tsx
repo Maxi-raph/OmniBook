@@ -1,4 +1,5 @@
 import OnboardingStep1 from '#/components/OnboardingStep1'
+import { OnboardingProvider } from '#/context/OnboardingContext'
 import { createFileRoute, Outlet, useMatchRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_onboarding/onboarding')({
@@ -16,6 +17,14 @@ export const Route = createFileRoute('/_onboarding/onboarding')({
 })
 
 function onboardingParent() {
+  return (
+    <OnboardingProvider>
+      <OnboardingShell />
+    </OnboardingProvider>
+  )
+}
+
+function OnboardingShell() {
 
   const matchRoute = useMatchRoute()
   const isChildActive = 
